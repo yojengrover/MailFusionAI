@@ -1,11 +1,8 @@
 
 
-import { Button } from "@/components/ui/button";
-import { LatestPost } from "@/app/_components/post";
-import { api, HydrateClient } from "@/trpc/server";
+import React from "react";
+import LinkAccountButton from "@/components/ui/link-account-button";
 
 export default async function Home() {
-  return<div>
-  <Button>Hello</Button>
-  </div>
+  return <LinkAccountButton />
 }
