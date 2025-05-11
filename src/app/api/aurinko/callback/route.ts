@@ -1,9 +1,10 @@
 import { exchangeCodeForAccessToken, getAccountDetails } from "@/lib/aurinko"
 import { db } from "@/server/db"
+import { waitUntil } from '@vercel/functions'
 import { auth, EmailAddress } from "@clerk/nextjs/server"
 import { create } from "domain"
 import { access } from "fs"
-
+import axios from "axios";
 import { NextResponse } from "next/server"
 
 export const GET = async (req: Request) => {
@@ -35,6 +36,14 @@ const accountDetails = await getAccountDetails(token.accessToken)
                 accessToken: token.accessToken
             }
         })
+        waitUntil(
+
+            axios.post(`${process.env.NEXT_PUBLIC_URL}/api/initial-sync`, { accountId: token.accountId.toString(), userId }).then((res) => {
+                console.log(res.data)
+            }).catch((err) => {
+                console.log(err.response.data)
+            })
+        )
 
     console.log('userid is', accountDetails)
     return NextResponse.redirect(new URL('/mail', req.url))
